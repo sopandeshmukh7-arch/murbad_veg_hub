@@ -54,7 +54,6 @@
         </div>
 
         <div id="vegList" style="margin-top: 5px;">
-            
             <div class="veg-card" data-name="टोमॅटो Tomato" data-price="20" data-unit="किलो">
                 <div class="veg-details"><span class="veg-icon">🍅</span><div><div class="veg-name">टोमॅटो (Tomato)</div><div class="veg-price">₹२० / किलो</div></div></div>
                 <div class="qty-controls"><button class="btn-qty" onclick="changeQty(this, -1)">-</button><span class="qty-count">0</span><button class="btn-qty" onclick="changeQty(this, 1)">+</button></div>
@@ -114,7 +113,6 @@
                 <div class="veg-details"><span class="veg-icon">🌿</span><div><div class="veg-name">कोथिंबीर (Coriander)</div><div class="veg-price">₹१० / जोडी</div></div></div>
                 <div class="qty-controls"><button class="btn-qty" onclick="changeQty(this, -1)">-</button><span class="qty-count">0</span><button class="btn-qty" onclick="changeQty(this, 1)">+</button></div>
             </div>
-
         </div>
     </div>
 
@@ -195,6 +193,9 @@
             let address = document.getElementById('custAddress').value.trim();
             let delTime = document.getElementById('deliveryTime').value;
 
+            // तुमचा WhatsApp नंबर (91 सह)
+            let myPhoneNumber = "919137379834"; 
+
             if (Object.keys(cart).length === 0) {
                 alert('कृपया आधी भाजी निवडा!');
                 return;
@@ -220,7 +221,7 @@
 
             message += `\n💰 *एकूण बिल: ₹${total}*`;
 
-            let url = `https://wa.me/?text=${encodeURIComponent(message)}`;
+            let url = `https://wa.me/${myPhoneNumber}?text=${encodeURIComponent(message)}`;
             window.open(url, '_blank');
         }
     </script>
