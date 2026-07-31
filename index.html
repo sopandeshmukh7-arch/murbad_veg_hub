@@ -1,52 +1,235 @@
-<!DOCTYPE html>
-<html lang="mr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>मुरबाड व्हेजी हब - Murbad Veg Hub</title>
-    <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; margin: 0; padding: 15px; text-align: center; }
-        .header { background: #2e7d32; color: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; }
-        .header h1 { margin: 0; font-size: 24px; }
-        .header p { margin: 5px 0 0; font-size: 14px; opacity: 0.9; }
-        .veg-card { background: white; border-radius: 10px; padding: 15px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .veg-info { text-align: left; }
-        .veg-name { font-size: 18px; font-weight: bold; color: #333; }
-        .veg-price { font-size: 16px; color: #2e7d32; font-weight: bold; margin-top: 4px; }
-        .order-btn { background: #25D366; color: white; text-decoration: none; padding: 8px 15px; border-radius: 6px; font-weight: bold; font-size: 14px; display: inline-block; }
-    </style>
-</head>
-<body>
+import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-    <div class="header">
-        <h1>🥦 मुरबाड व्हेजी हब 🍅</h1>
-        <p>ताजी भाजी थेट शेतातून आपल्या दारी!</p>
-    </div>
+void main() {
+  runApp(const VeggieApp());
+}
 
-    <!-- भाज्यांची यादी (दर बदलण्यासाठी इथे बदल करा) -->
-    <div class="veg-card">
-        <div class="veg-info">
-            <div class="veg-name">🍅 टोमॅटो (Tomato)</div>
-            <div class="veg-price">₹२० / किलो</div>
-        </div>
-        <a class="order-btn" href="https://wa.me/?text=मला १ किलो टोमॅटो हवे आहेत" target="_blank">ऑर्डर करा</a>
-    </div>
+class VeggieApp extends StatelessWidget {
+  const VeggieApp({super.key});
 
-    <div class="veg-card">
-        <div class="veg-info">
-            <div class="veg-name">🧅 कांदा (Onion)</div>
-            <div class="veg-price">₹३० / किलो</div>
-        </div>
-        <a class="order-btn" href="https://wa.me/?text=मला १ किलो कांदा हवा आहे" target="_blank">ऑर्डर करा</a>
-    </div>
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'मुरबाड व्हेजी हब',
+      theme: ThemeData(
+        primarySwatch: Colors.green,
+        useMaterial3: true,
+      ),
+      home: const VeggieHomePage(),
+    );
+  }
+}
 
-    <div class="veg-card">
-        <div class="veg-info">
-            <div class="veg-name">🥔 बटाटा (Potato)</div>
-            <div class="veg-price">₹२५ / किलो</div>
-        </div>
-        <a class="order-btn" href="https://wa.me/?text=मला १ किलो बटाटा हवा आहे" target="_blank">ऑर्डर करा</a>
-    </div>
+class VeggieHomePage extends StatefulWidget {
+  const VeggieHomePage({super.key});
 
-</body>
-</html>
+  @override
+  State<VeggieHomePage> createState() => _VeggieHomePageState();
+}
+
+class _VeggieHomePageState extends State<VeggieHomePage> {
+  // मोबाईल नंबर (तुमचा WhatsApp नंबर इथे टाका)
+  final String myPhoneNumber = "910000000000"; 
+
+  // भाजीपाल्याची यादी व दर
+  List<Map<String, dynamic>> veggies = [
+    {
+      "name": "टोमॅटो (Tomato)",
+      "price": 20,
+      "unit": "किलो",
+      "image": "https://cdn-icons-png.flaticon.com/512/1202/1202125.png",
+      "category": "भाज्या"
+    },
+    {
+      "name": "कांदा (Onion)",
+      "price": 30,
+      "unit": "किलो",
+      "image": "https://cdn-icons-png.flaticon.com/512/2909/2909761.png",
+      "category": "भाज्या"
+    },
+    {
+      "name": "बटाटा (Potato)",
+      "price": 25,
+      "unit": "किलो",
+      "image": "https://cdn-icons-png.flaticon.com/512/1135/1135528.png",
+      "category": "भाज्या"
+    },
+    {
+      "name": "मेथी (Fenugreek)",
+      "price": 15,
+      "unit": "जोडी",
+      "image": "https://cdn-icons-png.flaticon.com/512/5346/5346123.png",
+      "category": "पालेभाज्या"
+    },
+    {
+      "name": "पालक (Spinach)",
+      "price": 15,
+      "unit": "जोडी",
+      "image": "https://cdn-icons-png.flaticon.com/512/1892/1892601.png",
+      "category": "पालेभाज्या"
+    },
+  ];
+
+  Map<String, int> cart = {};
+  String searchQuery = "";
+
+  void _sendWhatsAppOrder() async {
+    if (cart.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('कृपया आधी काही भाज्या निवडा!')),
+      );
+      return;
+    }
+
+    String message = "नमस्कार! मला मुरबाड व्हेजी हब वरून खालील भाज्या हव्या आहेत:\n\n";
+    int total = 0;
+
+    cart.forEach((vegName, qty) {
+      var veg = veggies.firstWhere((element) => element['name'] == vegName);
+      int price = veg['price'] * qty;
+      total += price;
+      message += "• $vegName - $qty ${veg['unit']} (₹$price)\n";
+    });
+
+    message += "\n*एकूण बिल: ₹$total*";
+
+    final Uri url = Uri.parse("https://wa.me/$myPhoneNumber?text=${Uri.encodeComponent(message)}");
+
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('WhatsApp उघडता आले नाही.')),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var filteredVeggies = veggies
+        .where((veg) => veg['name'].toString().toLowerCase().contains(searchQuery.toLowerCase()))
+        .toList();
+
+    int totalCartAmount = 0;
+    cart.forEach((vegName, qty) {
+      var veg = veggies.firstWhere((element) => element['name'] == vegName);
+      totalCartAmount += (veg['price'] as int) * qty;
+    });
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('🥦 मुरबाड व्हेजी हब'),
+        backgroundColor: Colors.green,
+        foregroundColor: Colors.white,
+        centerTitle: true,
+      ),
+      body: Column(
+        children: [
+          // सर्च बार
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: 'भाजीचे नाव शोधा...',
+                prefixIcon: const Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              onChanged: (value) {
+                setState(() {
+                  searchQuery = value;
+                });
+              },
+            ),
+          ),
+
+          // भाजीपाल्याची लिस्ट
+          Expanded(
+            child: ListView.builder(
+              itemCount: filteredVeggies.length,
+              itemBuilder: (context, index) {
+                var veg = filteredVeggies[index];
+                String name = veg['name'];
+                int price = veg['price'];
+                String unit = veg['unit'];
+                int qty = cart[name] ?? 0;
+
+                return Card(
+                  margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  child: ListTile(
+                    leading: Image.network(veg['image'], width: 40, height: 40, errorBuilder: (c, e, s) => const Icon(Icons.shopping_basket, color: Colors.green)),
+                    title: Text(name, style: const TextStyle(fontWeight: FontWeight.bold)),
+                    subtitle: Text('₹$price / $unit', style: const TextStyle(color: Colors.green, fontWeight: FontWeight.w600)),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (qty > 0)
+                          IconButton(
+                            icon: const Icon(Icons.remove_circle, color: Colors.red),
+                            onPressed: () {
+                              setState(() {
+                                if (qty > 1) {
+                                  cart[name] = qty - 1;
+                                } else {
+                                  cart.remove(name);
+                                }
+                              });
+                            },
+                          ),
+                        if (qty > 0)
+                          Text('$qty', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                        IconButton(
+                          icon: const Icon(Icons.add_circle, color: Colors.green),
+                          onPressed: () {
+                            setState(() {
+                              cart[name] = qty + 1;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+
+      // खालील बॉटम बार (ऑर्डर बटण)
+      bottomNavigationBar: Container(
+        padding: const EdgeInsets.all(15),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 5)],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAlignment.start,
+              children: [
+                const Text('एकूण बिल:', style: TextStyle(fontSize: 14, color: Colors.grey)),
+                Text('₹$totalCartAmount', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.green)),
+              ],
+            ),
+            ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              ),
+              onPressed: _sendWhatsAppOrder,
+              icon: const Icon(Icons.shopping_cart),
+              label: const Text('WhatsApp वर ऑर्डर करा', style: TextStyle(fontSize: 16)),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
