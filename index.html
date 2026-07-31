@@ -6,16 +6,18 @@
     <title>मुरबाड व्हेजी हब - Murbad Veg Hub</title>
     <style>
         * { box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
-        body { background-color: #f0f4f1; margin: 0; padding: 0; padding-bottom: 90px; }
+        body { background-color: #f0f4f1; margin: 0; padding: 0; padding-bottom: 270px; }
         
         .header { background: #2e7d32; color: white; padding: 15px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.2); position: sticky; top: 0; z-index: 100; }
         .header h1 { margin: 0; font-size: 22px; }
         .header p { margin: 3px 0 0; font-size: 13px; opacity: 0.9; }
 
-        .search-container { padding: 12px 15px; background: white; }
+        .info-badge { background: #e8f5e9; border-left: 4px solid #2e7d32; color: #1b5e20; padding: 8px 12px; margin: 10px 15px 0; font-size: 12px; font-weight: bold; border-radius: 4px; }
+
+        .search-container { padding: 10px 15px; background: #f0f4f1; }
         .search-box { width: 100%; padding: 10px 15px; border: 1px solid #ccc; border-radius: 20px; font-size: 15px; outline: none; }
 
-        .container { max-width: 500px; margin: 0 auto; padding: 10px 15px; }
+        .container { max-width: 500px; margin: 0 auto; padding: 0 15px 10px; }
         .veg-card { background: white; border-radius: 12px; padding: 12px 15px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .veg-details { display: flex; align-items: center; gap: 12px; }
         .veg-icon { font-size: 30px; }
@@ -23,19 +25,27 @@
         .veg-price { font-size: 14px; color: #2e7d32; font-weight: bold; margin-top: 2px; }
 
         .qty-controls { display: flex; align-items: center; gap: 8px; }
-        .btn-qty { background: #e8f5e9; color: #2e7d32; border: none; width: 28px; height: 28px; border-radius: 50%; font-size: 18px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-        .qty-count { font-size: 15px; font-weight: bold; width: 16px; text-align: center; }
+        .btn-qty { background: #e8f5e9; color: #2e7d32; border: 1px solid #2e7d32; width: 30px; height: 30px; border-radius: 50%; font-size: 18px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .qty-count { font-size: 16px; font-weight: bold; width: 18px; text-align: center; }
 
-        .bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 -3px 10px rgba(0,0,0,0.1); max-width: 500px; margin: 0 auto; border-top-left-radius: 15px; border-top-right-radius: 15px; }
+        .bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 12px 15px; box-shadow: 0 -4px 12px rgba(0,0,0,0.15); max-width: 500px; margin: 0 auto; border-top-left-radius: 15px; border-top-right-radius: 15px; z-index: 101; }
+        .form-group { margin-bottom: 6px; }
+        .form-input { width: 100%; padding: 7px 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 13px; outline: none; }
+        .checkout-row { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
         .total-price { font-size: 18px; font-weight: bold; color: #2e7d32; }
-        .order-btn { background: #25D366; color: white; border: none; padding: 10px 20px; border-radius: 25px; font-size: 15px; font-weight: bold; cursor: pointer; text-decoration: none; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .order-btn { background: #25D366; color: white; border: none; padding: 10px 18px; border-radius: 25px; font-size: 14px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <h1>🥦 मुरबाड व्हेजी हब</h1>
+        <h1>🥦 मुरबाड व्हेजी हब 🍅</h1>
         <p>ताजी भाजी थेट शेतातून आपल्या दारी!</p>
+    </div>
+
+    <div class="info-badge">
+        ⏰ ऑर्डर २४ तास कधीही नोंदवू शकता!<br>
+        🚚 डिलिव्हरी वेळ: सकाळी ८:०० ते संध्याकाळी ६:०० पर्यंत.
     </div>
 
     <div class="container">
@@ -43,77 +53,99 @@
             <input type="text" id="searchInput" class="search-box" placeholder="भाजीचे नाव शोधा..." onkeyup="searchVeg()">
         </div>
 
-        <div id="vegList">
+        <div id="vegList" style="margin-top: 5px;">
+            
             <div class="veg-card" data-name="टोमॅटो Tomato" data-price="20" data-unit="किलो">
-                <div class="veg-details">
-                    <span class="veg-icon">🍅</span>
-                    <div>
-                        <div class="veg-name">टोमॅटो (Tomato)</div>
-                        <div class="veg-price">₹२० / किलो</div>
-                    </div>
-                </div>
-                <div class="qty-controls">
-                    <button class="btn-qty" onclick="changeQty(this, -1)">-</button>
-                    <span class="qty-count">0</span>
-                    <button class="btn-qty" onclick="changeQty(this, 1)">+</button>
-                </div>
+                <div class="veg-details"><span class="veg-icon">🍅</span><div><div class="veg-name">टोमॅटो (Tomato)</div><div class="veg-price">₹२० / किलो</div></div></div>
+                <div class="qty-controls"><button class="btn-qty" onclick="changeQty(this, -1)">-</button><span class="qty-count">0</span><button class="btn-qty" onclick="changeQty(this, 1)">+</button></div>
             </div>
 
             <div class="veg-card" data-name="कांदा Onion" data-price="30" data-unit="किलो">
-                <div class="veg-details">
-                    <span class="veg-icon">🧅</span>
-                    <div>
-                        <div class="veg-name">कांदा (Onion)</div>
-                        <div class="veg-price">₹३० / किलो</div>
-                    </div>
-                </div>
-                <div class="qty-controls">
-                    <button class="btn-qty" onclick="changeQty(this, -1)">-</button>
-                    <span class="qty-count">0</span>
-                    <button class="btn-qty" onclick="changeQty(this, 1)">+</button>
-                </div>
+                <div class="veg-details"><span class="veg-icon">🧅</span><div><div class="veg-name">कांदा (Onion)</div><div class="veg-price">₹३० / किलो</div></div></div>
+                <div class="qty-controls"><button class="btn-qty" onclick="changeQty(this, -1)">-</button><span class="qty-count">0</span><button class="btn-qty" onclick="changeQty(this, 1)">+</button></div>
             </div>
 
             <div class="veg-card" data-name="बटाटा Potato" data-price="25" data-unit="किलो">
-                <div class="veg-details">
-                    <span class="veg-icon">🥔</span>
-                    <div>
-                        <div class="veg-name">बटाटा (Potato)</div>
-                        <div class="veg-price">₹२५ / किलो</div>
-                    </div>
-                </div>
-                <div class="qty-controls">
-                    <button class="btn-qty" onclick="changeQty(this, -1)">-</button>
-                    <span class="qty-count">0</span>
-                    <button class="btn-qty" onclick="changeQty(this, 1)">+</button>
-                </div>
+                <div class="veg-details"><span class="veg-icon">🥔</span><div><div class="veg-name">बटाटा (Potato)</div><div class="veg-price">₹२५ / किलो</div></div></div>
+                <div class="qty-controls"><button class="btn-qty" onclick="changeQty(this, -1)">-</button><span class="qty-count">0</span><button class="btn-qty" onclick="changeQty(this, 1)">+</button></div>
+            </div>
+
+            <div class="veg-card" data-name="भेंडी Lady Finger" data-price="40" data-unit="किलो">
+                <div class="veg-details"><span class="veg-icon">🫛</span><div><div class="veg-name">भेंडी (Lady Finger)</div><div class="veg-price">₹४० / किलो</div></div></div>
+                <div class="qty-controls"><button class="btn-qty" onclick="changeQty(this, -1)">-</button><span class="qty-count">0</span><button class="btn-qty" onclick="changeQty(this, 1)">+</button></div>
+            </div>
+
+            <div class="veg-card" data-name="वांगी Brinjal" data-price="35" data-unit="किलो">
+                <div class="veg-details"><span class="veg-icon">🍆</span><div><div class="veg-name">वांगी (Brinjal)</div><div class="veg-price">₹३५ / किलो</div></div></div>
+                <div class="qty-controls"><button class="btn-qty" onclick="changeQty(this, -1)">-</button><span class="qty-count">0</span><button class="btn-qty" onclick="changeQty(this, 1)">+</button></div>
+            </div>
+
+            <div class="veg-card" data-name="फ्लॉवर Cauliflower" data-price="40" data-unit="किलो">
+                <div class="veg-details"><span class="veg-icon">🥦</span><div><div class="veg-name">फ्लॉवर (Cauliflower)</div><div class="veg-price">₹४० / किलो</div></div></div>
+                <div class="qty-controls"><button class="btn-qty" onclick="changeQty(this, -1)">-</button><span class="qty-count">0</span><button class="btn-qty" onclick="changeQty(this, 1)">+</button></div>
+            </div>
+
+            <div class="veg-card" data-name="कोबी Cabbage" data-price="30" data-unit="किलो">
+                <div class="veg-details"><span class="veg-icon">🥬</span><div><div class="veg-name">कोबी (Cabbage)</div><div class="veg-price">₹३० / किलो</div></div></div>
+                <div class="qty-controls"><button class="btn-qty" onclick="changeQty(this, -1)">-</button><span class="qty-count">0</span><button class="btn-qty" onclick="changeQty(this, 1)">+</button></div>
+            </div>
+
+            <div class="veg-card" data-name="गवार Cluster Beans" data-price="50" data-unit="किलो">
+                <div class="veg-details"><span class="veg-icon">🫛</span><div><div class="veg-name">गवार (Cluster Beans)</div><div class="veg-price">₹५० / किलो</div></div></div>
+                <div class="qty-controls"><button class="btn-qty" onclick="changeQty(this, -1)">-</button><span class="qty-count">0</span><button class="btn-qty" onclick="changeQty(this, 1)">+</button></div>
+            </div>
+
+            <div class="veg-card" data-name="मिरची Green Chilli" data-price="15" data-unit="पाव किलो">
+                <div class="veg-details"><span class="veg-icon">🌶️</span><div><div class="veg-name">हिरवी मिरची (Chilli)</div><div class="veg-price">₹१५ / पाव किलो</div></div></div>
+                <div class="qty-controls"><button class="btn-qty" onclick="changeQty(this, -1)">-</button><span class="qty-count">0</span><button class="btn-qty" onclick="changeQty(this, 1)">+</button></div>
             </div>
 
             <div class="veg-card" data-name="मेथी Fenugreek" data-price="15" data-unit="जोडी">
-                <div class="veg-details">
-                    <span class="veg-icon">🥬</span>
-                    <div>
-                        <div class="veg-name">मेथी (Fenugreek)</div>
-                        <div class="veg-price">₹१५ / जोडी</div>
-                    </div>
-                </div>
-                <div class="qty-controls">
-                    <button class="btn-qty" onclick="changeQty(this, -1)">-</button>
-                    <span class="qty-count">0</span>
-                    <button class="btn-qty" onclick="changeQty(this, 1)">+</button>
-                </div>
+                <div class="veg-details"><span class="veg-icon">🌱</span><div><div class="veg-name">मेथी (Fenugreek)</div><div class="veg-price">₹१५ / जोडी</div></div></div>
+                <div class="qty-controls"><button class="btn-qty" onclick="changeQty(this, -1)">-</button><span class="qty-count">0</span><button class="btn-qty" onclick="changeQty(this, 1)">+</button></div>
             </div>
+
+            <div class="veg-card" data-name="पालक Spinach" data-price="15" data-unit="जोडी">
+                <div class="veg-details"><span class="veg-icon">🍃</span><div><div class="veg-name">पालक (Spinach)</div><div class="veg-price">₹१५ / जोडी</div></div></div>
+                <div class="qty-controls"><button class="btn-qty" onclick="changeQty(this, -1)">-</button><span class="qty-count">0</span><button class="btn-qty" onclick="changeQty(this, 1)">+</button></div>
+            </div>
+
+            <div class="veg-card" data-name="कोथिंबीर Coriander" data-price="10" data-unit="जोडी">
+                <div class="veg-details"><span class="veg-icon">🌿</span><div><div class="veg-name">कोथिंबीर (Coriander)</div><div class="veg-price">₹१० / जोडी</div></div></div>
+                <div class="qty-controls"><button class="btn-qty" onclick="changeQty(this, -1)">-</button><span class="qty-count">0</span><button class="btn-qty" onclick="changeQty(this, 1)">+</button></div>
+            </div>
+
         </div>
     </div>
 
     <div class="bottom-bar">
-        <div>
-            <div style="font-size: 12px; color: #666;">एकूण बिल:</div>
-            <div class="total-price" id="totalBill">₹०</div>
+        <div style="font-weight: bold; font-size: 12px; margin-bottom: 5px; color: #333;">ग्राहक माहिती (ऑर्डरसाठी आवश्यक):</div>
+        <div class="form-group">
+            <input type="text" id="custName" class="form-input" placeholder="तुमचे पूर्ण नाव">
         </div>
-        <button class="order-btn" onclick="sendWhatsApp()">
-            <span>💬 WhatsApp वर ऑर्डर करा</span>
-        </button>
+        <div class="form-group">
+            <input type="tel" id="custPhone" class="form-input" placeholder="मोबाईल नंबर">
+        </div>
+        <div class="form-group">
+            <input type="text" id="custAddress" class="form-input" placeholder="पूर्ण पत्ता (उदा. म्हाडा कॉलनी, मुरबाड)">
+        </div>
+        <div class="form-group">
+            <select id="deliveryTime" class="form-input">
+                <option value="लवकरत लवकर (As soon as possible)">🚚 डिलिव्हरी: शक्य तितक्या लवकर</option>
+                <option value="आज संध्याकाळी (६ वाजेपर्यंत)">🌅 डिलिव्हरी: आज संध्याकाळी</option>
+                <option value="उद्या सकाळी (८ ते ११)">☀️ डिलिव्हरी: उद्या सकाळी</option>
+            </select>
+        </div>
+
+        <div class="checkout-row">
+            <div>
+                <div style="font-size: 11px; color: #666;">एकूण बिल:</div>
+                <div class="total-price" id="totalBill">₹०</div>
+            </div>
+            <button class="order-btn" onclick="sendWhatsApp()">
+                <span>💬 WhatsApp ऑर्डर</span>
+            </button>
+        </div>
     </div>
 
     <script>
@@ -158,20 +190,35 @@
         }
 
         function sendWhatsApp() {
+            let name = document.getElementById('custName').value.trim();
+            let phone = document.getElementById('custPhone').value.trim();
+            let address = document.getElementById('custAddress').value.trim();
+            let delTime = document.getElementById('deliveryTime').value;
+
             if (Object.keys(cart).length === 0) {
-                alert('कृपया आधी काही भाजी निवडा!');
+                alert('कृपया आधी भाजी निवडा!');
                 return;
             }
 
-            let message = "नमस्कार! मला मुरबाड व्हेजी हब वरून खालील भाजी हवी आहे:\n\n";
-            let total = 0;
+            if (!name || !phone || !address) {
+                alert('कृपया तुमचे नाव, मोबाईल नंबर आणि पत्ता पूर्ण भरा!');
+                return;
+            }
 
+            let message = `🛒 *नवीन ऑर्डर - मुरबाड व्हेजी हब*\n\n`;
+            message += `👤 *ग्राहकाचे नाव:* ${name}\n`;
+            message += `📞 *मोबाईल नंबर:* ${phone}\n`;
+            message += `📍 *पत्ता:* ${address}\n`;
+            message += `⏰ *डिलिव्हरी वेळ:* ${delTime}\n\n`;
+            message += `🥦 *निवडलेल्या भाज्या:*\n`;
+
+            let total = 0;
             for (let item in cart) {
                 message += `• ${item} - ${cart[item].qty} ${cart[item].unit} (₹${cart[item].price})\n`;
                 total += cart[item].price;
             }
 
-            message += `\n*एकूण बिल: ₹${total}*`;
+            message += `\n💰 *एकूण बिल: ₹${total}*`;
 
             let url = `https://wa.me/?text=${encodeURIComponent(message)}`;
             window.open(url, '_blank');
