@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>मुरबाड व्हेजी हब - Murbad Veg Hub</title>
+    <!-- QR Code Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         * { box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
         body { background-color: #f0f4f1; margin: 0; padding: 0; padding-bottom: 270px; }
@@ -13,6 +15,11 @@
         .header p { margin: 3px 0 0; font-size: 13px; opacity: 0.9; }
 
         .info-badge { background: #e8f5e9; border-left: 4px solid #2e7d32; color: #1b5e20; padding: 8px 12px; margin: 10px 15px 0; font-size: 12px; font-weight: bold; border-radius: 4px; }
+
+        /* QR Scanner Section */
+        .qr-section { background: white; margin: 10px 15px; padding: 12px; border-radius: 12px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .qr-section h3 { margin: 0 0 8px; font-size: 14px; color: #2e7d32; }
+        #qrcode { display: inline-flex; padding: 5px; background: white; border: 1px solid #ddd; border-radius: 8px; }
 
         .search-container { padding: 10px 15px; background: #f0f4f1; }
         .search-box { width: 100%; padding: 10px 15px; border: 1px solid #ccc; border-radius: 20px; font-size: 15px; outline: none; }
@@ -46,6 +53,13 @@
     <div class="info-badge">
         ⏰ ऑर्डर २४ तास कधीही नोंदवू शकता!<br>
         🚚 डिलिव्हरी वेळ: सकाळी ८:०० ते संध्याकाळी ६:०० पर्यंत.
+    </div>
+
+    <!-- QR Code Box -->
+    <div class="qr-section">
+        <h3>📱 मोबाईलवर स्कॅन करून भाजी मागवा</h3>
+        <div id="qrcode"></div>
+        <div style="font-size: 11px; color: #666; margin-top: 4px;">हा QR कोड स्कॅन करून डायरेक्ट वेबसाईट उघडा</div>
     </div>
 
     <div class="container">
@@ -147,6 +161,16 @@
     </div>
 
     <script>
+        // ऑटोमॅटिक QR Code जनरेट करणे
+        window.onload = function() {
+            var currentUrl = window.location.href;
+            new QRCode(document.getElementById("qrcode"), {
+                text: currentUrl,
+                width: 110,
+                height: 110,
+            });
+        };
+
         let cart = {};
 
         function changeQty(btn, change) {
@@ -193,7 +217,6 @@
             let address = document.getElementById('custAddress').value.trim();
             let delTime = document.getElementById('deliveryTime').value;
 
-            // तुमचा नंबर भारताचा देश कोड (91) लावून पूर्ण केला आहे
             let myPhoneNumber = "919137379834"; 
 
             if (Object.keys(cart).length === 0) {
